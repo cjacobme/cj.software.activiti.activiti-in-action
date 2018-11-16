@@ -21,21 +21,28 @@ public class LoadSimpleProcessTest
 		ProcessEngine lProcessEngine = ProcessEngineConfiguration
 				.createStandaloneInMemProcessEngineConfiguration()
 				.buildProcessEngine();
-		RepositoryService lRepoService = lProcessEngine.getRepositoryService();
-		lRepoService
-				.createDeployment()
-				.addClasspathResource("bookorder.simple.bpmn20.xml")
-				.deploy();
+		try
+		{
+			RepositoryService lRepoService = lProcessEngine.getRepositoryService();
+			lRepoService
+					.createDeployment()
+					.addClasspathResource("bookorder.simple.bpmn20.xml")
+					.deploy();
 
-		RuntimeService lRuntimeService = lProcessEngine.getRuntimeService();
-		ProcessInstance lProcessInstance = lRuntimeService.startProcessInstanceByKey(
-				"simple-book-order");
-		assertThat(lProcessInstance).as("loaded process instance").isNotNull();
-		assertThat(lProcessInstance.getId()).as("id").isNotNull();
-		this.logger.info(
-				String.format(
-						"process instance with id %s and definition-id %s",
-						lProcessInstance.getId(),
-						lProcessInstance.getProcessDefinitionId()));
+			RuntimeService lRuntimeService = lProcessEngine.getRuntimeService();
+			ProcessInstance lProcessInstance = lRuntimeService.startProcessInstanceByKey(
+					"simple-book-order");
+			assertThat(lProcessInstance).as("loaded process instance").isNotNull();
+			assertThat(lProcessInstance.getId()).as("id").isNotNull();
+			this.logger.info(
+					String.format(
+							"process instance with id %s and definition-id %s",
+							lProcessInstance.getId(),
+							lProcessInstance.getProcessDefinitionId()));
+		}
+		finally
+		{
+			lProcessEngine.close();
+		}
 	}
 }
