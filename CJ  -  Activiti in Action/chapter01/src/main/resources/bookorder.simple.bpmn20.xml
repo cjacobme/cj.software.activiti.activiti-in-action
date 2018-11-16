@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+targetNamespace="http://www.bpmnwithactiviti.org">
+	<process id="simple-book-order" name = "Order Book">
+		<startEvent id="start-event" name = "Start"/>
+		<sequenceFlow targetRef="end-event" sourceRef="start-event" id="sequence-flow-1"/>
+		<endEvent id="end-event" name = "End"/>
+	</process>
+</definitions>
