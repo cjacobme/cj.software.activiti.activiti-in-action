@@ -22,6 +22,7 @@
 		<h2.version>1.2.132</h2.version>
 		<slf4j.version>1.7.25</slf4j.version>
 		<groovy.version>1.7.5</groovy.version>
+		<postgresql.version>42.1.4</postgresql.version>
 
 		<junit.version>4.12</junit.version>
 		<assertj.version>3.9.1</assertj.version>
@@ -54,6 +55,11 @@
 				<groupId>org.codehaus.groovy</groupId>
 				<artifactId>groovy</artifactId>
 				<version>${groovy.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>${postgresql.version}</version>
 			</dependency>
 
 			<dependency>
