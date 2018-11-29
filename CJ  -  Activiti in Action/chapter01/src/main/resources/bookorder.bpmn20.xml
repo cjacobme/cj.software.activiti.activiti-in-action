@@ -10,7 +10,8 @@
 		<scriptTask id="scripttask1" name="Validate order"
 			scriptFormat="groovy">
 			<script>
-				out:println "validating order for isbn " + isbn;
+				now = new Date();
+				out:println now.format("HH:mm:ss.SSS") + " SCRIPT: validating order for isbn " + isbn;
 			</script>
 		</scriptTask>
 		<sequenceFlow id="sequenceflow2" name="Sending to sales"
