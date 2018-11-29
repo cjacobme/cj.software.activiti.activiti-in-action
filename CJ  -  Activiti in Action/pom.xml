@@ -18,7 +18,7 @@
 	<description>Examples from the book "Activiti in Action"</description>
 
 	<properties>
-		<activiti.version>6.0.0</activiti.version>
+		<activiti.version>5.22.0</activiti.version>
 		<h2.version>1.2.132</h2.version>
 		<slf4j.version>1.7.25</slf4j.version>
 		<groovy.version>1.7.5</groovy.version>
