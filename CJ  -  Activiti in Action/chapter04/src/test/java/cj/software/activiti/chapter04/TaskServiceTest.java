@@ -5,8 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.activiti.engine.IdentityService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.identity.User;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.test.ActivitiRule;
 import org.activiti.engine.test.Deployment;
@@ -46,5 +48,37 @@ public class TaskServiceTest
 		Map<String, Object> lVariables = new HashMap<>();
 		lVariables.put("isbn", "123456");
 		lRuntimeService.startProcessInstanceByKey("bookorder", lVariables);
+	}
+
+	@Test
+	public void createAndClaimTask()
+	{
+		TaskService lTaskService = this.activitiRule.getTaskService();
+
+		Task lTask = lTaskService.newTask();
+		lTask.setName("Test task");
+		lTask.setPriority(100);
+		lTaskService.saveTask(lTask);
+
+		IdentityService lIdentityService = this.activitiRule.getIdentityService();
+		User lUser = lIdentityService.newUser("JohnDoe");
+		lUser.setFirstName("John");
+		lUser.setLastName("Doe");
+		lIdentityService.saveUser(lUser);
+
+		lTaskService.addCandidateUser(lTask.getId(), "JohnDoe");
+		lTask = lTaskService.createTaskQuery().taskCandidateUser("JohnDoe").singleResult();
+		assertThat(lTask).as("found task").isNotNull();
+		assertThat(lTask.getName()).as("task name").isEqualTo("Test task");
+		assertThat(lTask.getAssignee()).as("task assignee").isNull();
+
+		lTaskService.claim(lTask.getId(), "JohnDoe");
+		lTask = lTaskService.createTaskQuery().taskAssignee("JohnDoe").singleResult();
+		assertThat(lTask).as("task assigned to JohnDoe").isNotNull();
+		assertThat(lTask.getAssignee()).as("assignee").isEqualTo("JohnDoe");
+
+		lTaskService.complete(lTask.getId());
+		lTask = lTaskService.createTaskQuery().taskAssignee("JohnDoe").singleResult();
+		assertThat(lTask).as("task assigned to JohnDoe").isNull();
 	}
 }
