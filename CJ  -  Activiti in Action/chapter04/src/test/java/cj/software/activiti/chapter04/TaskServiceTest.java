@@ -9,6 +9,7 @@ import org.activiti.engine.IdentityService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.identity.User;
+import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.test.ActivitiRule;
 import org.activiti.engine.test.Deployment;
@@ -28,10 +29,17 @@ public class TaskServiceTest
 	@Deployment(resources = "bookorder.bpmn20.xml")
 	public void queryTask()
 	{
-		this.startProcessInstance();
+		ProcessInstance lProcessInstance = this.startProcessInstance();
+		String lProcessInstanceId = lProcessInstance.getId();
+		this.logger.info(
+				String.format("started with process instance %s", lProcessInstance.getId()));
 
 		TaskService lTaskService = this.activitiRule.getTaskService();
-		Task lTask = lTaskService.createTaskQuery().taskCandidateGroup("sales").singleResult();
+		Task lTask = lTaskService
+				.createTaskQuery()
+				.processInstanceId(lProcessInstanceId)
+				.taskCandidateGroup("sales")
+				.singleResult();
 		assertThat(lTask).isNotNull();
 		assertThat(lTask.getName()).as("task name").isEqualTo("Complete order");
 		this.logger.info(
@@ -42,12 +50,15 @@ public class TaskServiceTest
 						lTask.getTaskDefinitionKey()));
 	}
 
-	private void startProcessInstance()
+	private ProcessInstance startProcessInstance()
 	{
 		RuntimeService lRuntimeService = this.activitiRule.getRuntimeService();
 		Map<String, Object> lVariables = new HashMap<>();
 		lVariables.put("isbn", "123456");
-		lRuntimeService.startProcessInstanceByKey("bookorder", lVariables);
+		ProcessInstance lResult = lRuntimeService.startProcessInstanceByKey(
+				"bookorder",
+				lVariables);
+		return lResult;
 	}
 
 	@Test
