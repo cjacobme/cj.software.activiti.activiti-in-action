@@ -27,6 +27,7 @@ public class RuntimeServiceTest
 	{
 		ProcessEngine lProcessEngine = ProcessEngineConfiguration
 				.createStandaloneInMemProcessEngineConfiguration()
+				.setDatabaseSchemaUpdate("drop-create")
 				.buildProcessEngine();
 		RepositoryService lRepositoryService = lProcessEngine.getRepositoryService();
 		lRepositoryService.createDeployment().addClasspathResource("bookorder.bpmn20.xml").deploy();
