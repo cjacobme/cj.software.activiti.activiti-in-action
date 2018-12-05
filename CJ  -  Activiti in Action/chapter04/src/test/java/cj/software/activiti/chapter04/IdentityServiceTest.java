@@ -2,7 +2,9 @@ package cj.software.activiti.chapter04;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.activiti.engine.IdentityService;
@@ -16,6 +18,7 @@ import org.activiti.engine.test.ActivitiRule;
 import org.activiti.engine.test.Deployment;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -25,6 +28,21 @@ public class IdentityServiceTest
 	public ActivitiRule activitiRule = new ActivitiRule("activiti.cfg-mem.xml");
 
 	private Logger logger = LogManager.getLogger(IdentityServiceTest.class);
+
+	@Before
+	public void tidyUp()
+	{
+		TaskService lTaskService = this.activitiRule.getTaskService();
+		List<Task> lTasks = lTaskService.createTaskQuery().list();
+		List<String> lTaskIds = new ArrayList<>(lTasks.size());
+		for (Task bTask : lTasks)
+		{
+			lTaskService.complete(bTask.getId());
+			lTaskIds.add(bTask.getId());
+		}
+		lTaskService.deleteTasks(lTaskIds, true);
+		this.logger.info(String.format("deleted %d old tasks", lTaskIds.size()));
+	}
 
 	@Test
 	@Deployment(resources =
