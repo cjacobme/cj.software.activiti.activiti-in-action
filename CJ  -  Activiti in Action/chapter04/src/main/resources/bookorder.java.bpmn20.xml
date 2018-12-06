@@ -1,15 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" 
-		targetNamespace="http://www.bpmnwithactiviti.org"
-		xmlns:activiti="http://activiti.org/bpmn">
-		
-	<process id="bookorder" name="bookorder">
-		<startEvent id="startevent1" name="Start"/>
-		<serviceTask id="serviceTask1" name="Validate order" activiti:class="org.bpmnwithactiviti.chapter4.java.ValidateService"/>
-		<sequenceFlow id="sequenceflow1" name="Validate order" sourceRef="startevent1" targetRef="serviceTask1"/>
-		<userTask id="usertask1" name="Complete order" activiti:candidateGroups="sales"/>
-		<sequenceFlow id="sequenceflow2" name="Sending to management" sourceRef="serviceTask1" targetRef="usertask1"/>
-		<endEvent id="endevent1" name="End"/>
-		<sequenceFlow id="sequenceflow3" name="flow" sourceRef="usertask1" targetRef="endevent1"/>
-	</process>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.bpmnwithactiviti.org">
+  <process id="bookorder" name="bookorder" isExecutable="true">
+    <startEvent id="startevent1" name="Start"></startEvent>
+    <serviceTask id="serviceTask1" name="Validate order" activiti:class="cj.software.activiti.chapter04.ValidateService"></serviceTask>
+    <userTask id="usertask1" name="Complete order" activiti:candidateGroups="sales"></userTask>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow1" name="finish" sourceRef="usertask1" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow2" name="to management" sourceRef="serviceTask1" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow3" name="validate" sourceRef="startevent1" targetRef="serviceTask1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_bookorder">
+    <bpmndi:BPMNPlane bpmnElement="bookorder" id="BPMNPlane_bookorder">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="22.0" y="34.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="serviceTask1" id="BPMNShape_serviceTask1">
+        <omgdc:Bounds height="60.0" width="100.0" x="183.0" y="22.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="60.0" width="100.0" x="390.0" y="21.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="590.0" y="33.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="490.0" y="51.0"></omgdi:waypoint>
+        <omgdi:waypoint x="590.0" y="50.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="490.0" y="51.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="283.0" y="52.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.0" y="51.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="283.0" y="52.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="57.0" y="51.0"></omgdi:waypoint>
+        <omgdi:waypoint x="183.0" y="52.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="57.0" y="51.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
 </definitions>
