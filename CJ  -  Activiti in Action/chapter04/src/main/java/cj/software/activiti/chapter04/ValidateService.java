@@ -15,7 +15,7 @@ public class ValidateService
 {
 	private Logger logger = Logger.getLogger(ValidateService.class);
 
-	public static final String KEY_VALIDATION_TIMESTAMP = "validatione-timestamp";
+	public static final String KEY_VALIDATION_TIMESTAMP = "validation-timestamp";
 
 	@Override
 	public void execute(DelegateExecution pExecution) throws Exception
