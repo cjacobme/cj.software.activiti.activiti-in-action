@@ -140,4 +140,21 @@ public class JavaBpmnTest
 			this.thread.interrupt();
 		}
 	}
+
+	@Test
+	@Deployment(resources =
+	{ "bookorder.java.expression.bpmn20.xml"
+	})
+	public void javaExecutionWithFields()
+	{
+		ProcessInstance lProcessInstance = this.startProcessInstance();
+		RuntimeService lRuntimeService = this.activitiRule.getRuntimeService();
+		OffsetDateTime lValidationTimestamp = (OffsetDateTime) lRuntimeService.getVariable(
+				lProcessInstance.getId(),
+				ValidateService.KEY_VALIDATION_TIMESTAMP);
+		assertThat(lValidationTimestamp).isNotNull();
+
+		this.logger.info(String.format("validation timestamp is %s", lValidationTimestamp));
+
+	}
 }
